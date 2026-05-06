@@ -1,0 +1,17 @@
+{
+  "repo": "tidal-store-index-runner",
+  "thresholds": {
+    "signal": 4,
+    "slack": 2,
+    "confidence": 1,
+    "drag": 4,
+    "ship": 192,
+    "watch": 110
+  },
+  "terms": [
+    "index fit",
+    "join width",
+    "constraint risk",
+    "plan drift"
+  ]
+}
