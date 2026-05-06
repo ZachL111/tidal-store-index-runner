@@ -1,0 +1,7 @@
+name,demand,capacity,latency,risk,weight,score,decision,reason
+baseline,60,86,17,13,8,97,review,databases baseline scenario exercises the review path for bounded failure handling
+pressure,77,69,27,21,8,34,review,databases pressure scenario exercises the review path for bounded failure handling
+surge,101,96,20,17,14,175,review,databases surge scenario exercises the review path for bounded failure handling
+degraded,63,60,37,25,7,-66,review,databases degraded scenario exercises the review path for bounded failure handling
+recovery,91,102,16,11,9,192,accept,databases recovery scenario keeps the local fixture within the modeled acceptance band
+boundary,76,83,22,14,8,101,review,databases boundary scenario exercises the review path for bounded failure handling

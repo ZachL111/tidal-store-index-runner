@@ -1,43 +1,68 @@
 # tidal-store-index-runner
 
-tidal-store-index-runner is a Swift project for databases. It focuses on this technical goal: Develop a Swift command-oriented project for index scenarios with round-trip fixtures, lossless normalization checks, and synthetic fixtures only.
+`tidal-store-index-runner` explores databases in Swift. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
 
-## Why it exists
+## Tidal Store Index Runner Notes
 
-Small engineering tools are easiest to trust when their rules are explicit, testable, and cheap to run locally. This repository packages a focused model with fixture data and a local verification path so behavior can be reviewed without external services.
+The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
 
-## Features
+## Why This Exists
 
-- Deterministic policy scoring over fixture scenarios.
-- Clear accept or review decisions based on a documented threshold.
-- A command-line or local test path for quick validation.
-- Golden fixture data for repeatable checks.
-- Minimal dependencies and a compact project layout.
+The repository exists to keep a technical idea small enough to reason about. The implementation avoids external dependencies where possible, then uses fixtures to make changes easy to review.
 
-## Architecture Notes
+## Example Scenarios
 
-The core module exposes a small scoring API. Inputs are simple numeric signals: demand, capacity, latency, risk, and weight. The score uses a threshold of 176, risk penalty 5, latency penalty 4, and weight bonus 3. Tests exercise the public API against the fixture cases in `fixtures/cases.csv`.
+The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `recovery` shows the model when capacity and weight are strong enough to clear the threshold.
 
-## Setup
+## Implementation Notes
 
-Install the Swift toolchain and run commands from the repository root.
+The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps schema shape, query checks, and fixture rows in one explicit decision path. The threshold is 176, with risk penalty 5, latency penalty 4, and weight bonus 3. The Swift project compiles a minimal command-line test harness against the local Windows SDK.
 
-## Usage
+## Feature Notes
+
+- Models schema shape with deterministic scoring and explicit review decisions.
+- Uses fixture data to keep query checks changes visible in code review.
+- Includes extended examples for fixture rows, including `recovery` and `degraded`.
+- Documents constraint behavior tradeoffs in `docs/operations.md`.
+- Runs locally with a single verification command and no external credentials.
+
+## Try It
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-The verification script builds or runs the project and checks the fixture decisions.
+This runs the language-level build or test path against the compact fixture set.
 
 ## Tests
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
 ```
 
-## Limitations And Roadmap
+The audit command checks repository structure and README constraints before it delegates to the verifier.
 
-- The fixture set is intentionally small so it can be audited by hand.
-- Future work could add richer domain-specific input adapters.
-- The model is a local demonstration and does not claim production use.
+## Code Tour
+
+- `src`: primary implementation
+- `tests`: verification harness
+- `fixtures`: compact golden scenarios
+- `examples`: expanded scenario set
+- `metadata`: project constants and verification metadata
+- `docs`: operations and extension notes
+- `scripts`: local verification and audit commands
+
+## Roadmap
+
+- Add malformed input fixtures so the failure path is as visible as the happy path.
+- Split the scoring constants into a typed configuration object and validate it before use.
+- Add a comparison mode that shows how decisions change when one signal is adjusted.
+- Add one more databases fixture that focuses on a malformed or borderline input.
+
+## Boundaries
+
+The repository favors determinism over breadth. It does not pull live data, keep secrets, or depend on network access for verification.
+
+## Local Setup
+
+Use a normal shell with Swift available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
